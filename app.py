@@ -6,7 +6,7 @@ app = FastAPI()
 
 @app.get("/")
 def read_root():
-    return {"message:": "PU-Track Model Server"}
+    return "PU-Track Model Server"
 
 model = joblib.load("./model.pkl")
 
