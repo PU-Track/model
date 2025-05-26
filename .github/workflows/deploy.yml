@@ -1,0 +1,28 @@
+name: Deploy to EC2
+
+on:
+    push:
+        branches:
+            - deploy
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+
+            - name: Set up SSH
+              uses: appleboy/ssh-action@v0.1.6
+              with:
+                  host: ${{ secrets.EC2_HOST }}
+                  username: ${{ secrets.EC2_USER }}
+                  key: ${{ secrets.EC2_SSH_KEY }}
+                  script: |
+                      cd /home/ubuntu/putrack
+                      git pull origin deploy
+                      docker stop putrack || true
+                      docker rm putrack || true
+                      docker build -t putrack .
+                      docker run -d -p 8000:8000 --name putrack putrack
