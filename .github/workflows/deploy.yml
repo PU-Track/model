@@ -20,7 +20,7 @@ jobs:
                   username: ${{ secrets.EC2_USER }}
                   key: ${{ secrets.EC2_SSH_KEY }}
                   script: |
-                      cd /home/ubuntu/putrack
+                      cd ~/model
                       git pull origin deploy
                       sudo docker stop putrack || true
                       sudo docker rm putrack || true
